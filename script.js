@@ -13,16 +13,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
   
+window.addEventListener('DOMContentLoaded', () => {
+  const bgMusic = document.getElementById('bg-music');
+  const clickSound = document.getElementById('click-sound');
+  const startButton = document.querySelector('.start-button');
+  const startScreen = document.getElementById('start-screen');
+  const sceneContainer = document.getElementById('scene-container');
 
-  // Клик по кнопке запускает звук, а музыку — выключает
+  bgMusic.volume = 0.1;
+  bgMusic.play().catch(e => console.log("Музыка не запустилась автоматически:", e));
+
   startButton.addEventListener('click', () => {
     clickSound.currentTime = 0;
     clickSound.play();
 
-    // Переход к первой сцене после паузы
     setTimeout(() => {
-      startScreen.style.display = 'none';
-      sceneContainer.style.display = 'block';
+      startScreen.classList.add('fade-out');
+      sceneContainer.classList.add('fade-in');
       renderScene('intro');
     }, 500);
   });
@@ -394,8 +401,7 @@ function typeText(element, text, speed = 25, callback) {
     }
 
     if (i < text.length) {
-      const char = text[i] === '\n' ? '<br>' : text[i];
-      element.innerHTML += char;
+      element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
       i++;
     } else {
       clearInterval(interval);
@@ -404,8 +410,19 @@ function typeText(element, text, speed = 25, callback) {
     }
   }, speed);
 
-  element.addEventListener('click', () => {
+  element.onclick = () => {
     if (typing) skipTyping = true;
+  };
+}
+
+function renderChoices(choicesContainer, choices) {
+  choicesContainer.innerHTML = '';
+  choices.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'btn';
+    btn.textContent = choice.text;
+    btn.onclick = () => renderScene(choice.next);
+    choicesContainer.appendChild(btn);
   });
 }
 
@@ -413,29 +430,26 @@ function renderScene(sceneKey) {
   const scene = scenes[sceneKey];
   const container = document.getElementById('scene-container');
 
+  if (!scene) {
+    console.error('Сцена не найдена:', sceneKey);
+    return;
+  }
+
   container.style.opacity = 0;
 
   setTimeout(() => {
     container.innerHTML = `
       <div class="scene ${sceneKey === 'scene_police_intervention' ? 'scene--glitch' : ''}" style="background-image: url('${scene.bg}')">
         <div class="scene__text"><p id="scene-text"></p></div>
-        <div class="scene__choices"></div>
+        <div class="scene__choices" id="scene-choices"></div>
       </div>
     `;
 
     const textElement = document.getElementById('scene-text');
-    const choicesContainer = container.querySelector('.scene__choices');
+    const choicesContainer = document.getElementById('scene-choices');
 
     typeText(textElement, scene.text, 20, () => {
-      if (scene.choices && scene.choices.length > 0) {
-        scene.choices.forEach(choice => {
-          const btn = document.createElement('button');
-          btn.classList.add('btn');
-          btn.textContent = choice.text;
-          btn.onclick = () => renderScene(choice.next);
-          choicesContainer.appendChild(btn);
-        });
-      }
+      if (scene.choices) renderChoices(choicesContainer, scene.choices);
     });
 
     container.style.opacity = 1;
