@@ -1,0 +1,257 @@
+/* Основной стиль для всей страницы */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Press Start 2P', monospace; /* Ретро-стиль шрифта */
+  background: url('assets/bg.gif') no-repeat center center/cover; /* Фоновое изображение на весь экран */
+  color: #00ff99; /* Неоновый зелёный текст */
+  height: 100vh; /* Высота всей вьюпорта */
+  overflow: hidden; /* Убираем скролл */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Стартовый экран — обёртка */
+.start-screen {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  z-index: 1;
+  padding: 2rem;
+  border: 2px dashed #00ff99; /* Обводка в стиле "ретро" */
+  border-radius: 20px;
+  animation: flicker 2s infinite; /* Эффект мерцания */
+}
+
+/* Полупрозрачный тёмный фон поверх фоновой картинки */
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 0;
+}
+
+/* Логотип игры */
+.logo {
+  font-size: 3rem;
+  margin-top: 100px;
+  z-index: 1;
+  position: relative;
+  text-shadow: 0 0 10px #0f0, 0 0 20px #0ff; /* Неоновый эффект */
+}
+
+/* Часть логотипа с другим цветом */
+.logo span {
+  color: #ff0044;
+  text-shadow: 0 0 10px #f00, 0 0 20px #f0f; /* Красный неоновый эффект */
+}
+
+/* Подзаголовок/слоган */
+.tagline {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #ccc;
+  position: relative;
+  z-index: 1;
+}
+
+/* Меню с кнопками */
+.menu {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* Стиль всех кнопок */
+.btn {
+  font-size: 1rem;
+  padding: 0.75rem 2rem;
+  background: #00ff99; /* Цвет фона кнопки */
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #000; /* Цвет текста */
+  transition: all 0.3s; /* Плавные эффекты */
+}
+
+/* Эффект при наведении на кнопку */
+.btn:hover {
+  background: #00cc77;
+  transform: scale(1.05); /* Увеличение при наведении */
+}
+#scene-container {
+  position: relative;
+  width: 100vw; height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+#text-box {
+  background: rgba(0, 0, 30, 0.7);
+  padding: 20px;
+  font-size: 1.2rem;
+  line-height: 1.5;
+  border-radius: 12px 12px 0 0;
+  max-height: 40vh;
+  overflow-y: auto;
+  user-select: none;
+  align-self: start;
+  justify-items: center;
+}
+
+#scene__choices {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px 20px 30px;
+  gap: 15px;
+  background: rgba(0, 0, 30, 0.9);
+  border-radius: 0 0 12px 12px;
+  justify-self: center;
+}
+
+.choice-btn {
+  flex: 1 1 30%;
+  background: #0ff;
+  color: #000;
+  border: none;
+  padding: 12px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.choice-btn:hover {
+  background-color: #0cc;
+}
+
+
+#scene-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: opacity 0.5s ease;
+}
+
+.scene {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.scene__text {
+  background: rgba(0, 0, 30, 0.7);
+  padding: 20px;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  max-height: 40vh;
+  overflow-y: auto;
+  color: #00ff99;
+}
+
+.scene__choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: rgba(0, 0, 30, 0.9);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.scene__text {
+  background: rgba(0, 0, 30, 0.7);
+  padding: 1rem 1.5rem;
+  border-radius: 12px 12px 0 0;
+  max-height: 40vh;
+  overflow-y: auto;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #00ff99;
+}
+
+.scene__choices {
+  background: rgba(0, 0, 30, 0.9);
+  padding: 1rem;
+  border-radius: 0 0 12px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.scene--glitch {
+  position: relative;
+  animation: glitch-bg 0.5s infinite;
+}
+
+@keyframes glitch-bg {
+  0% { filter: hue-rotate(0deg) contrast(1); transform: scale(1); }
+  20% { filter: hue-rotate(20deg) contrast(1.1); transform: scale(1.01); }
+  40% { filter: hue-rotate(-10deg) contrast(1.2); transform: scale(0.99); }
+  60% { filter: hue-rotate(30deg) contrast(1.1); transform: scale(1.02); }
+  80% { filter: hue-rotate(-20deg) contrast(0.9); transform: scale(1); }
+  100% { filter: hue-rotate(0deg) contrast(1); transform: scale(1); }
+}
+@media (max-width: 768px) {
+  .scene__text {
+    font-size: 0.75rem;
+    max-height: 30vh;
+  }
+
+  .btn, .nav-btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .scene__choices {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+.scene__nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.nav-btn {
+  background: #333;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+}
