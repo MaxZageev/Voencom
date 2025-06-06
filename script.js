@@ -366,11 +366,20 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   function showPopup(htmlContent) {
-    const modal = document.getElementById('popup-modal');
-    const content = document.getElementById('popup-content');
-    content.innerHTML = htmlContent + '<br><br><button class="btn" onclick="closePopup()">Закрыть</button>';
-    modal.classList.add('show');
-  }
+  const modal = document.getElementById('popup-modal');
+  const content = document.getElementById('popup-content');
+  content.innerHTML = htmlContent;
+
+  const closeBtn = document.createElement('button');
+  closeBtn.className = 'btn';
+  closeBtn.textContent = 'Закрыть';
+  closeBtn.addEventListener('click', closePopup);
+  content.appendChild(document.createElement('br'));
+  content.appendChild(document.createElement('br'));
+  content.appendChild(closeBtn);
+
+  modal.classList.add('show');
+}
 
   function closePopup() {
     document.getElementById('popup-modal').classList.remove('show');
