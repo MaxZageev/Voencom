@@ -375,6 +375,7 @@ window.addEventListener('DOMContentLoaded', () => {
   function closePopup() {
     document.getElementById('popup-modal').classList.remove('show');
   }
+  window.closePopup = closePopup;
 
   function markEndingAsSeen(key) {
     const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
