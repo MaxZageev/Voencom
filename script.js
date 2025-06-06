@@ -468,23 +468,16 @@ function renderChoices(container, choices) {
 }
 
 function renderScene(sceneKey) {
-  const scene = scenes[sceneKey];
   const container = document.getElementById('scene-container');
+  const scene = scenes[sceneKey];
 
   if (!scene) {
     console.error('Сцена не найдена:', sceneKey);
     return;
   }
 
-  const endingsKeys = [
-    'ending_pro_it',
-    'ending_psy_art',
-    'ending_digital_ghost_good',
-    'ending_digital_ghost_bad',
-    'ending_true_end'
-  ];
-
-  if (endingsKeys.includes(sceneKey)) {
+  // Сохраняем концовку, если это она
+  if (Object.keys(allEndings).includes(sceneKey)) {
     markEndingAsSeen(sceneKey);
   }
 
@@ -502,7 +495,10 @@ function renderScene(sceneKey) {
     const choicesContainer = document.getElementById('scene-choices');
 
     typeText(textElement, scene.text, 20, () => {
-      if (scene.choices) renderChoices(choicesContainer, scene.choices);
+      // Если есть выборы — показать их (в концовках он есть: кнопка "Рестарт")
+      if (scene.choices && Array.isArray(scene.choices)) {
+        renderChoices(choicesContainer, scene.choices);
+      }
     });
 
     container.style.opacity = 1;
