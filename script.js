@@ -351,6 +351,8 @@ scene_matrix_bug: {
 
 
 
+const scenes = { /* твои сцены здесь, как были */ };
+
 const allEndings = {
   ending_pro_it: '🧰 Айтишник в армии',
   ending_psy_art: '🌀 Псих-арт хаос',
@@ -363,8 +365,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const bgMusic = document.getElementById('bg-music');
   const clickSound = document.getElementById('click-sound');
   const startButton = document.querySelector('.start-button');
-  const sceneContainer = document.getElementById('scene-container');
   const endingsButton = document.querySelector('.endings-button');
+  const sceneContainer = document.getElementById('scene-container');
   const startScreen = document.getElementById('start-screen');
 
   function showPopup(htmlContent) {
@@ -375,8 +377,8 @@ window.addEventListener('DOMContentLoaded', () => {
     const closeBtn = document.createElement('button');
     closeBtn.className = 'btn';
     closeBtn.textContent = 'Закрыть';
-    closeBtn.addEventListener('click', closePopup);
-    content.appendChild(document.createElement('br'));
+    closeBtn.onclick = closePopup;
+
     content.appendChild(document.createElement('br'));
     content.appendChild(closeBtn);
 
@@ -386,7 +388,6 @@ window.addEventListener('DOMContentLoaded', () => {
   function closePopup() {
     document.getElementById('popup-modal').classList.remove('show');
   }
-  window.closePopup = closePopup;
 
   function markEndingAsSeen(key) {
     const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
@@ -396,101 +397,60 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  endingsButton.addEventListener('click', () => {
+  endingsButton.onclick = () => {
     const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
     let html = '<h2>📘 Открытые концовки:</h2><ul>';
     for (const key in allEndings) {
-      const status = seen[key] ? '✅' : '⬜';
-      html += `<li>${status} <strong>${allEndings[key]}</strong></li>`;
+      html += `<li>${seen[key] ? '✅' : '⬜'} ${allEndings[key]}</li>`;
     }
     html += '</ul>';
     showPopup(html);
-  });
+  };
 
   bgMusic.volume = 0.1;
-  bgMusic.play().catch(e => console.log("Музыка не запустилась автоматически:", e));
+  bgMusic.play().catch(e => console.log("Музыка не запустилась:", e));
 
-  startButton.addEventListener('click', () => {
-    clickSound.currentTime = 0;
+  startButton.onclick = () => {
     clickSound.play();
-    setTimeout(() => {
-      startScreen.classList.add('fade-out');
-      sceneContainer.style.display = 'block';
-      sceneContainer.classList.add('fade-in');
-      renderScene('intro');
-    }, 500);
-  });
+    startScreen.classList.add('fade-out');
+    sceneContainer.style.display = 'block';
+    renderScene('intro');
+  };
+
+  function typeText(element, text, speed = 20, cb) {
+    element.innerHTML = '';
+    let i = 0;
+    const interval = setInterval(() => {
+      element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
+      if (++i >= text.length) clearInterval(interval), cb && cb();
+    }, speed);
+  }
+
+  function renderChoices(container, choices) {
+    container.innerHTML = choices.map(c => `<button class="btn">${c.text}</button>`).join('');
+    container.querySelectorAll('.btn').forEach((btn, i) => {
+      btn.onclick = () => renderScene(choices[i].next);
+    });
+  }
+
+  function renderScene(key) {
+    const scene = scenes[key];
+    if (!scene) return;
+
+    if (allEndings[key]) markEndingAsSeen(key);
+
+    sceneContainer.innerHTML = `
+      <div class="scene" style="background-image:url(${scene.bg})">
+        <p id="scene-text"></p>
+        <div id="scene-choices"></div>
+      </div>`;
+
+    typeText(document.getElementById('scene-text'), scene.text, 20, () => {
+      if (scene.choices) renderChoices(document.getElementById('scene-choices'), scene.choices);
+    });
+  }
 });
 
-let typing = false;
-let skipTyping = false;
-
-function typeText(element, text, speed = 25, callback) {
-  element.innerHTML = '';
-  let i = 0;
-  typing = true;
-  skipTyping = false;
-  const interval = setInterval(() => {
-    if (skipTyping) {
-      clearInterval(interval);
-      element.innerHTML = text.replace(/\n/g, '<br>');
-      typing = false;
-      callback && callback();
-      return;
-    }
-    if (i < text.length) {
-      element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
-      i++;
-    } else {
-      clearInterval(interval);
-      typing = false;
-      callback && callback();
-    }
-  }, speed);
-  element.onclick = () => {
-    if (typing) skipTyping = true;
-  };
-}
-
-function renderChoices(container, choices) {
-  container.innerHTML = '';
-  choices.forEach(choice => {
-    const btn = document.createElement('button');
-    btn.className = 'btn';
-    btn.textContent = choice.text;
-    btn.onclick = () => renderScene(choice.next);
-    container.appendChild(btn);
-  });
-}
-
-function renderScene(sceneKey) {
-  const container = document.getElementById('scene-container');
-  const scene = scenes[sceneKey];
-  if (!scene) {
-    console.error('Сцена не найдена:', sceneKey);
-    return;
-  }
-  if (Object.keys(allEndings).includes(sceneKey)) {
-    markEndingAsSeen(sceneKey);
-  }
-  container.style.opacity = 0;
-  setTimeout(() => {
-    container.innerHTML = `
-      <div class="scene ${sceneKey === 'scene_police_intervention' ? 'scene--glitch' : ''}" style="background-image: url('${scene.bg}')">
-        <div class="scene__text"><p id="scene-text"></p></div>
-        <div class="scene__choices" id="scene-choices"></div>
-      </div>
-    `;
-    const textElement = document.getElementById('scene-text');
-    const choicesContainer = document.getElementById('scene-choices');
-    typeText(textElement, scene.text, 20, () => {
-      if (scene.choices && Array.isArray(scene.choices)) {
-        renderChoices(choicesContainer, scene.choices);
-      }
-    });
-    container.style.opacity = 1;
-  }, 300);
-}
 
 
 // Загружаем сцены из внешнего файла, если нужно, или добавим scenes = {...} здесь вручную
