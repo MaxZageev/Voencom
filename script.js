@@ -1,19 +1,6 @@
-// script.js
-
-
 import { scenes } from './scenes.js';
 
 // script.js
-
-
-
-const allEndings = {
-  ending_pro_it: '🧰 Айтишник в армии',
-  ending_psy_art: '🌀 Псих-арт хаос',
-  ending_digital_ghost_good: '👻 Цифровой призрак',
-  ending_digital_ghost_bad: '📉 Обнаружен',
-  ending_true_end: '💤 Истинный конец'
-};
 
 window.addEventListener('DOMContentLoaded', () => {
   const bgMusic = document.getElementById('bg-music');
@@ -44,24 +31,36 @@ window.addEventListener('DOMContentLoaded', () => {
   }
   window.closePopup = closePopup;
 
-  function markEndingAsSeen(key) {
-    const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
-    if (!seen[key]) {
-      seen[key] = true;
-      localStorage.setItem('seenEndings', JSON.stringify(seen));
+  function markEndingAsSeen(sceneKey) {
+    const scene = scenes[sceneKey];
+    if (scene?.isEnding) {
+      const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
+      if (!seen[sceneKey]) {
+        seen[sceneKey] = true;
+        localStorage.setItem('seenEndings', JSON.stringify(seen));
+      }
     }
   }
 
-  endingsButton.addEventListener('click', () => {
+  function getAllEndingScenes() {
+    return Object.entries(scenes)
+      .filter(([_, scene]) => scene.isEnding)
+      .map(([key]) => key);
+  }
+
+  function showEndingsPopup() {
     const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
+    const allEndings = getAllEndingScenes();
     let html = '<h2>📘 Открытые концовки:</h2><ul>';
-    for (const key in allEndings) {
+    for (const key of allEndings) {
       const status = seen[key] ? '✅' : '⬜';
-      html += `<li>${status} <strong>${allEndings[key]}</strong></li>`;
+      html += `<li>${status} <strong>${key}</strong></li>`;
     }
     html += '</ul>';
     showPopup(html);
-  });
+  }
+
+  endingsButton.addEventListener('click', showEndingsPopup);
 
   bgMusic.volume = 0.1;
   bgMusic.play().catch(e => console.log("Музыка не запустилась автоматически:", e));
@@ -103,50 +102,4 @@ function typeText(element, text, speed = 25, callback) {
       callback && callback();
     }
   }, speed);
-  element.onclick = () => {
-    if (typing) skipTyping = true;
-  };
-}
-
-function renderChoices(container, choices) {
-  container.innerHTML = '';
-  choices.forEach(choice => {
-    const btn = document.createElement('button');
-    btn.className = 'btn';
-    btn.textContent = choice.text;
-    btn.onclick = () => renderScene(choice.next);
-    container.appendChild(btn);
-  });
-}
-
-function renderScene(sceneKey) {
-  const container = document.getElementById('scene-container');
-  const scene = scenes[sceneKey];
-  if (!scene) {
-    console.error('Сцена не найдена:', sceneKey);
-    return;
-  }
-  if (Object.keys(allEndings).includes(sceneKey)) {
-    markEndingAsSeen(sceneKey);
-  }
-  container.style.opacity = 0;
-  setTimeout(() => {
-    container.innerHTML = `
-      <div class="scene ${sceneKey === 'scene_police_intervention' ? 'scene--glitch' : ''}" style="background-image: url('${scene.bg}')">
-        <div class="scene__text"><p id="scene-text"></p></div>
-        <div class="scene__choices" id="scene-choices"></div>
-      </div>
-    `;
-    const textElement = document.getElementById('scene-text');
-    const choicesContainer = document.getElementById('scene-choices');
-    typeText(textElement, scene.text, 20, () => {
-      if (scene.choices && Array.isArray(scene.choices)) {
-        renderChoices(choicesContainer, scene.choices);
-      }
-    });
-    container.style.opacity = 1;
-  }, 300);
-}
-
-
-// Загружаем сцены из внешнего файла, если нужно, или добавим scenes = {...} здесь вручную
+  element.onclick = ()
