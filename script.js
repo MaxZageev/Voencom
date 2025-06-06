@@ -367,7 +367,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const startButton = document.querySelector('.start-button');
   const sceneContainer = document.getElementById('scene-container');
   const endingsButton = document.querySelector('.endings-button');
-  const startScreen = document.getElementById('start-screen'); // ← вот это нужно было добавить
+  const startScreen = document.getElementById('start-screen');
+
   function showPopup(htmlContent) {
     const modal = document.getElementById('popup-modal');
     const content = document.getElementById('popup-content');
@@ -397,10 +398,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Отображение списка концовок по кнопке
   endingsButton.addEventListener('click', () => {
     const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
-    let html = '<h2>\ud83d\udcd8 \u041e\u0442\u043a\u0440\u044b\u0442\u044b\u0435 \u043a\u043e\u043d\u0446\u043e\u0432\u043a\u0438:</h2><ul>';
+    let html = '<h2>📘 Открытые концовки:</h2><ul>';
     for (const key in allEndings) {
       const status = seen[key] ? '✅' : '⬜';
       html += `<li>${status} <strong>${allEndings[key]}</strong></li>`;
@@ -415,7 +415,6 @@ window.addEventListener('DOMContentLoaded', () => {
   startButton.addEventListener('click', () => {
     clickSound.currentTime = 0;
     clickSound.play();
-
     setTimeout(() => {
       startScreen.classList.add('fade-out');
       sceneContainer.style.display = 'block';
@@ -433,7 +432,6 @@ function typeText(element, text, speed = 25, callback) {
   let i = 0;
   typing = true;
   skipTyping = false;
-
   const interval = setInterval(() => {
     if (skipTyping) {
       clearInterval(interval);
@@ -442,7 +440,6 @@ function typeText(element, text, speed = 25, callback) {
       callback && callback();
       return;
     }
-
     if (i < text.length) {
       element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
       i++;
@@ -452,7 +449,6 @@ function typeText(element, text, speed = 25, callback) {
       callback && callback();
     }
   }, speed);
-
   element.onclick = () => {
     if (typing) skipTyping = true;
   };
@@ -472,18 +468,14 @@ function renderChoices(container, choices) {
 function renderScene(sceneKey) {
   const container = document.getElementById('scene-container');
   const scene = scenes[sceneKey];
-
   if (!scene) {
     console.error('Сцена не найдена:', sceneKey);
     return;
   }
-
   if (Object.keys(allEndings).includes(sceneKey)) {
     markEndingAsSeen(sceneKey);
   }
-
   container.style.opacity = 0;
-
   setTimeout(() => {
     container.innerHTML = `
       <div class="scene ${sceneKey === 'scene_police_intervention' ? 'scene--glitch' : ''}" style="background-image: url('${scene.bg}')">
@@ -491,16 +483,13 @@ function renderScene(sceneKey) {
         <div class="scene__choices" id="scene-choices"></div>
       </div>
     `;
-
     const textElement = document.getElementById('scene-text');
     const choicesContainer = document.getElementById('scene-choices');
-
     typeText(textElement, scene.text, 20, () => {
       if (scene.choices && Array.isArray(scene.choices)) {
         renderChoices(choicesContainer, scene.choices);
       }
     });
-
     container.style.opacity = 1;
   }, 300);
 }
