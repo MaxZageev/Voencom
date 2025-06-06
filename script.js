@@ -8,7 +8,30 @@ window.addEventListener('DOMContentLoaded', () => {
   const startButton = document.querySelector('.start-button');
   const startScreen = document.getElementById('start-screen');
   const sceneContainer = document.getElementById('scene-container');
+const allEndings = {
+  ending_pro_it: '🧰 Айтишник в армии',
+  ending_psy_art: '🌀 Псих-арт хаос',
+  ending_digital_ghost_good: '👻 Цифровой призрак',
+  ending_digital_ghost_bad: '📉 Обнаружен',
+  ending_true_end: '💤 Истинный конец'
+};
+function showPopup(htmlContent) {
+  const modal = document.getElementById('popup-modal');
+  const content = document.getElementById('popup-content');
+  content.innerHTML = htmlContent + '<br><br><button class="btn" onclick="closePopup()">Закрыть</button>';
+  modal.classList.add('show');
+}
 
+function closePopup() {
+  document.getElementById('popup-modal').classList.remove('show');
+}
+function markEndingAsSeen(key) {
+  const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
+  if (!seen[key]) {
+    seen[key] = true;
+    localStorage.setItem('seenEndings', JSON.stringify(seen));
+  }
+}
   bgMusic.volume = 0.1;
   bgMusic.play().catch(e => console.log("Музыка не запустилась автоматически:", e));
 
@@ -77,7 +100,9 @@ function renderScene(sceneKey) {
     console.error('Сцена не найдена:', sceneKey);
     return;
   }
-
+if (Object.keys(allEndings).includes(sceneKey)) {
+  markEndingAsSeen(sceneKey);
+}
   container.style.opacity = 0;
 
   setTimeout(() => {
@@ -98,6 +123,17 @@ function renderScene(sceneKey) {
     container.style.opacity = 1;
   }, 300);
 }
+document.querySelector('.endings-button').addEventListener('click', () => {
+  const seen = JSON.parse(localStorage.getItem('seenEndings')) || {};
+  let html = '<h2>📘 Открытые концовки:</h2><ul>';
+  for (const key in allEndings) {
+    const status = seen[key] ? '✅' : '⬜';
+    html += `<li>${status} <strong>${allEndings[key]}</strong></li>`;
+  }
+  html += '</ul>';
+  showPopup(html); // создадим модалку ниже
+});
+
 const scenes = {
   intro: {
     bg: 'assets/scene1-room.jpg',
