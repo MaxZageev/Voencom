@@ -367,7 +367,7 @@ window.addEventListener('DOMContentLoaded', () => {
   const startButton = document.querySelector('.start-button');
   const sceneContainer = document.getElementById('scene-container');
   const endingsButton = document.querySelector('.endings-button');
-
+  const startScreen = document.getElementById('start-screen'); // ← вот это нужно было добавить
   function showPopup(htmlContent) {
     const modal = document.getElementById('popup-modal');
     const content = document.getElementById('popup-content');
