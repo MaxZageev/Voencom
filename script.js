@@ -174,8 +174,7 @@ scene_psychiatric: {
   choices: [
     { text: 'Очнуться. Может, это и правда был сон?', next: 'ending_true_end' }
   ]
-}
-,
+},
 
 scene_escape_attempt: {
   bg: 'assets/scene_escape.jpg',
@@ -237,8 +236,7 @@ scene_binge_drink: {
   choices: [
     { text: 'Может, это всё был сон?', next: 'ending_true_end' }
   ]
-}
-,
+},
 
 scene_matrix_bug: {
   bg: 'assets/scene_matrix_bug.jpg',
