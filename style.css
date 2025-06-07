@@ -5,33 +5,30 @@
   --button-hover: #00cc77;
 }
 
+/* Безопасный отступ под вырез */
 body {
   margin: 0;
   padding: 0;
+  padding-top: max(env(safe-area-inset-top), 20px);
   font-family: 'Press Start 2P', monospace;
   background: url('assets/bg.gif') no-repeat center center/cover;
+  background-color: #000;
   color: var(--neon-color);
-  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-html, body {
-  background-color: #000; /* ← чёрный фон по умолчанию */
   width: 100%;
-  height: 100%;
-  overscroll-behavior: none; /* отключает прокрутку за границы */
+  overscroll-behavior: none;
   touch-action: manipulation;
 }
 
-body {
+html {
   background-color: #000;
-  background-image: url('assets/bg.gif');
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
 }
+
 .start-screen {
   position: relative;
   height: 100%;
@@ -51,14 +48,86 @@ body {
 }
 
 .logo {
-  font-size: 3rem;
-  margin-top: 100px;
-  text-shadow: 0 0 10px #0f0, 0 0 20px #0ff;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: max(env(safe-area-inset-top), 60px);
+  width: 300px;
+  max-width: 90vw;
+  text-align: center;
+  z-index: 2;
 }
 
-.logo span {
-  color: #ff0044;
-  text-shadow: 0 0 10px #f00, 0 0 20px #f0f;
+.logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.logo-image.glitch-r,
+.logo-image.glitch-g,
+.logo-image.glitch-b {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  opacity: 0.7;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.logo-image.glitch-r {
+  filter: drop-shadow(-2px 0 red);
+  animation: glitch-r 2s infinite ease-in-out;
+}
+
+.logo-image.glitch-g {
+  filter: drop-shadow(2px 0 lime);
+  animation: glitch-g 3s infinite ease-in-out;
+}
+
+.logo-image.glitch-b {
+  filter: drop-shadow(0 -2px blue);
+  animation: glitch-b 1.5s infinite ease-in-out;
+}
+
+.logo--glitch .logo-image:not(.glitch-r):not(.glitch-g):not(.glitch-b) {
+  animation: logo-glitch-core 3s infinite steps(1, end);
+}
+
+@keyframes glitch-r {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  10% { transform: translate(-2px, 0); opacity: 0.8; }
+  20% { transform: translate(2px, -1px); opacity: 0.4; }
+  30% { transform: translate(-1px, 2px); opacity: 0.6; }
+  40%, 90% { transform: translate(0, 0); opacity: 0.2; }
+}
+
+@keyframes glitch-g {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  15% { transform: translate(1px, 1px); opacity: 0.6; }
+  25% { transform: translate(-1px, -2px); opacity: 0.5; }
+  35% { transform: translate(2px, 1px); opacity: 0.7; }
+  45%, 95% { transform: translate(0, 0); opacity: 0.2; }
+}
+
+@keyframes glitch-b {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  20% { transform: translate(-1px, 2px); opacity: 0.7; }
+  30% { transform: translate(1px, -1px); opacity: 0.5; }
+  40% { transform: translate(2px, 2px); opacity: 0.6; }
+  50%, 90% { transform: translate(0, 0); opacity: 0.2; }
+}
+
+@keyframes logo-glitch-core {
+  0% { transform: none; }
+  5% { transform: translate(-1px, 1px) rotate(0.5deg); }
+  10% { transform: translate(1px, -1px) rotate(-0.5deg); }
+  15% { transform: translate(-2px, 2px) rotate(0.5deg); }
+  20%, 100% { transform: none; }
 }
 
 .tagline {
@@ -93,8 +162,8 @@ body {
 #scene-container {
   position: relative;
   width: 100vw;
-  height: 100vh;   /* fallback */
-  height: 100dvh;  /* учитывает меню браузера на мобильных */
+  height: 100vh;
+  height: 100dvh;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -129,8 +198,7 @@ body {
 
 .scene__choices {
   background: var(--bg-dark);
-  padding: 1rem;
-  padding-bottom: 2rem;
+  padding: 1rem 1rem 3rem 1rem;
   border-radius: 0 0 12px 12px;
   display: flex;
   flex-wrap: wrap;
@@ -150,137 +218,8 @@ body {
 }
 
 @media (max-width: 768px) {
-  .scene__text {
-    font-size: 0.85rem;
-    max-height: calc(100vh - 280px);
-    padding: 0.75rem 1rem;
-  }
-
-  .btn {
-    font-size: 0.9rem;
-    padding: 0.6rem 1.2rem;
-  }
-
-  .scene__choices {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .logo {
-    font-size: 2rem;
-    margin-top: 50px;
-  }
-
-  .tagline {
-    font-size: 0.8rem;
-  }
-
-  .menu {
-    margin-top: 2rem;
-  }
-}
-
-.fade-out {
-  animation: fadeOut 0.5s forwards;
-}
-
-.fade-in {
-  animation: fadeIn 0.5s forwards;
-}
-
-@keyframes fadeOut {
-  to { opacity: 0; display: none; }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.9; }
-}
-
-#popup-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.85);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-#popup-modal.show {
-  display: flex;
-}
-
-.popup-content {
-  background: #111;
-  color: #0f0;
-  padding: 2rem;
-  border-radius: 1rem;
-  border: 2px solid #0f0;
-  max-width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.85rem;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Press Start 2P', monospace;
-  background: url('assets/bg.gif') no-repeat center center/cover;
-  color: var(--neon-color);
-  height: 100dvh;
-  min-height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.scene__choices {
-  background: var(--bg-dark);
-  padding: 1rem 1rem 3rem 1rem; /* добавили нижний отступ */
-  border-radius: 0 0 12px 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .scene__choices {
-    padding-bottom: 4rem; /* ещё больше для мобилок */
-  }
-
-  .scene__text {
-    font-size: 0.85rem;
-    max-height: calc(100vh - 280px);
-    padding: 0.75rem 1rem;
-  }
-
-  .logo {
-    font-size: 2rem;
-    margin-top: 50px;
-  }
-
-  .tagline {
-    font-size: 0.8rem;
-  }
-
-  .menu {
-    margin-top: 2rem;
-  }
-}
-
-@media (max-width: 768px) {
   body {
-    font-size: 12px; /* глобальное сжатие шрифта */
+    font-size: 12px;
   }
 
   .scene__text {
@@ -322,124 +261,46 @@ body {
   }
 }
 
-.logo {
-  display: flex;
+.fade-out {
+  animation: fadeOut 0.5s forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  to { opacity: 0; display: none; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+#popup-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
   justify-content: center;
   align-items: center;
-  margin-top: 100px;
+  z-index: 999;
 }
 
-.logo-image {
-  max-width: 100%;
-  height: auto;
-  width: 300px; /* можно подогнать по размеру */
-}
-.logo {
-  position: relative;
-  display: inline-block;
-  margin-top: 100px;
-}
-
-.logo-image {
-  width: 300px;
-  max-width: 80vw;
-  height: auto;
-  display: block;
-  filter: none;
-}
-
-/* Глитч-копии */
-.logo-image.glitch-r,
-.logo-image.glitch-g,
-.logo-image.glitch-b {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0.7;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-/* Цветовые смещения */
-.logo-image.glitch-r {
-  filter: drop-shadow(-2px 0 red);
-  animation: glitch-r 2s infinite ease-in-out;
-}
-
-.logo-image.glitch-g {
-  filter: drop-shadow(2px 0 lime);
-  animation: glitch-g 3s infinite ease-in-out;
-}
-
-.logo-image.glitch-b {
-  filter: drop-shadow(0 -2px blue);
-  animation: glitch-b 1.5s infinite ease-in-out;
-}
-
-/* Основной глитч: тряска и случайные паузы */
-.logo--glitch .logo-image:not(.glitch-r):not(.glitch-g):not(.glitch-b) {
-  animation: logo-glitch-core 3s infinite steps(1, end);
-}
-
-/* Анимации */
-@keyframes glitch-r {
-  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
-  10% { transform: translate(-2px, 0); opacity: 0.8; }
-  20% { transform: translate(2px, -1px); opacity: 0.4; }
-  30% { transform: translate(-1px, 2px); opacity: 0.6; }
-  40%, 90% { transform: translate(0, 0); opacity: 0.2; }
-}
-
-@keyframes glitch-g {
-  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
-  15% { transform: translate(1px, 1px); opacity: 0.6; }
-  25% { transform: translate(-1px, -2px); opacity: 0.5; }
-  35% { transform: translate(2px, 1px); opacity: 0.7; }
-  45%, 95% { transform: translate(0, 0); opacity: 0.2; }
-}
-
-@keyframes glitch-b {
-  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
-  20% { transform: translate(-1px, 2px); opacity: 0.7; }
-  30% { transform: translate(1px, -1px); opacity: 0.5; }
-  40% { transform: translate(2px, 2px); opacity: 0.6; }
-  50%, 90% { transform: translate(0, 0); opacity: 0.2; }
-}
-
-@keyframes logo-glitch-core {
-  0% { transform: none; }
-  5% { transform: translate(-1px, 1px) rotate(0.5deg); }
-  10% { transform: translate(1px, -1px) rotate(-0.5deg); }
-  15% { transform: translate(-2px, 2px) rotate(0.5deg); }
-  20%, 100% { transform: none; }
-}
-
-.logo {
-  position: relative;
+#popup-modal.show {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 60px;
-  width: 100%;
-  text-align: center;
 }
 
-.logo img {
-  display: block;
-  width: 300px;
-  max-width: 90vw;
-  height: auto;
-}
-
-/* Глитч-копии */
-.logo-image.glitch-r,
-.logo-image.glitch-g,
-.logo-image.glitch-b {
-  position: absolute;
-  top: 0;
-  left: 0;
-  opacity: 0.7;
-  pointer-events: none;
-  mix-blend-mode: screen;
+.popup-content {
+  background: #111;
+  color: #0f0;
+  padding: 2rem;
+  border-radius: 1rem;
+  border: 2px solid #0f0;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.85rem;
 }
