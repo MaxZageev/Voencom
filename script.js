@@ -139,12 +139,14 @@ function typeText(element, text, speed = 25, callback) {
     if (skipTyping) {
       clearInterval(interval);
       element.innerHTML = text.replace(/\n/g, '<br>');
+      element.scrollTop = element.scrollHeight; // scroll to bottom
       typing = false;
       callback && callback();
       return;
     }
     if (i < text.length) {
       element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
+      element.scrollTop = element.scrollHeight; // scroll to bottom
       i++;
     } else {
       clearInterval(interval);
