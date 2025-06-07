@@ -283,7 +283,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -299,7 +299,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -316,7 +316,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -332,7 +332,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -350,7 +350,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
-    ]
+  { text: 'Рестарт', next: 'restart_game' }
+]
   }
 };
