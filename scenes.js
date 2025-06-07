@@ -156,6 +156,7 @@ scene_psychiatric: {
 
 
   scene_police_intervention: {
+  glitch: true,
   bg: 'assets/scene_police.jpg',
   text: `Сначала — сирена. Потом — треск ботинок по линолеуму.  
 В дверь влетел отряд в броне с надписью "ВоенТехКонтроль".  
