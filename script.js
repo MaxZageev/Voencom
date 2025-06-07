@@ -1,5 +1,5 @@
 import { scenes } from './scenes.js';
-
+// хуй
 window.addEventListener('DOMContentLoaded', () => {
   const bgMusic = document.getElementById('bg-music');
   const clickSound = document.getElementById('click-sound');
