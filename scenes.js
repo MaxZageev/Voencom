@@ -1,3 +1,12 @@
+export const allEndings = {
+  ending_pro_it: '🧰 Айтишник в армии',
+  ending_psy_art: '🌀 Псих-арт хаос',
+  ending_digital_ghost_good: '👻 Цифровой призрак',
+  ending_digital_ghost_bad: '📉 Обнаружен',
+  ending_true_end: '💤 Истинный конец'
+};
+
+
 export const scenes = {
   intro: {
     bg: 'assets/scene1-room.jpg',
