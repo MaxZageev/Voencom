@@ -214,3 +214,52 @@ body {
   font-family: 'Press Start 2P', monospace;
   font-size: 0.85rem;
 }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Press Start 2P', monospace;
+  background: url('assets/bg.gif') no-repeat center center/cover;
+  color: var(--neon-color);
+  height: 100dvh;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scene__choices {
+  background: var(--bg-dark);
+  padding: 1rem 1rem 3rem 1rem; /* добавили нижний отступ */
+  border-radius: 0 0 12px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .scene__choices {
+    padding-bottom: 4rem; /* ещё больше для мобилок */
+  }
+
+  .scene__text {
+    font-size: 0.85rem;
+    max-height: calc(100vh - 280px);
+    padding: 0.75rem 1rem;
+  }
+
+  .logo {
+    font-size: 2rem;
+    margin-top: 50px;
+  }
+
+  .tagline {
+    font-size: 0.8rem;
+  }
+
+  .menu {
+    margin-top: 2rem;
+  }
+}
