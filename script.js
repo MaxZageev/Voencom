@@ -74,7 +74,21 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 500);
   });
 
+  window.showStartScreen = function () {
+    sceneContainer.classList.remove('fade-in');
+    sceneContainer.style.display = 'none';
+
+    startScreen.classList.remove('fade-out');
+    startScreen.style.opacity = '1';
+    startScreen.style.display = 'flex';
+  };
+
   function renderScene(sceneKey) {
+    if (sceneKey === 'restart_game') {
+      showStartScreen();
+      return;
+    }
+
     const scene = scenes[sceneKey];
     if (!scene) return;
 
