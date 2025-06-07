@@ -74,7 +74,21 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 500);
   });
 
+  window.showStartScreen = function () {
+    sceneContainer.classList.remove('fade-in');
+    sceneContainer.style.display = 'none';
+
+    startScreen.classList.remove('fade-out');
+    startScreen.style.opacity = '1';
+    startScreen.style.display = 'flex';
+  };
+
   function renderScene(sceneKey) {
+    if (sceneKey === 'restart_game') {
+      showStartScreen();
+      return;
+    }
+
     const scene = scenes[sceneKey];
     if (!scene) return;
 
@@ -83,7 +97,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const sceneDiv = document.createElement('div');
     sceneDiv.className = 'scene';
     sceneDiv.style.backgroundImage = `url('${scene.bg}')`;
-
+if (scene.glitch) {
+  sceneDiv.classList.add('scene--glitch');
+}
     const textDiv = document.createElement('div');
     textDiv.className = 'scene__text';
     sceneDiv.appendChild(textDiv);
@@ -123,12 +139,14 @@ function typeText(element, text, speed = 25, callback) {
     if (skipTyping) {
       clearInterval(interval);
       element.innerHTML = text.replace(/\n/g, '<br>');
+      element.scrollTop = element.scrollHeight; // scroll to bottom
       typing = false;
       callback && callback();
       return;
     }
     if (i < text.length) {
       element.innerHTML += text[i] === '\n' ? '<br>' : text[i];
+      element.scrollTop = element.scrollHeight; // scroll to bottom
       i++;
     } else {
       clearInterval(interval);

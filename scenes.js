@@ -156,6 +156,7 @@ scene_psychiatric: {
 
 
   scene_police_intervention: {
+  glitch: true,
   bg: 'assets/scene_police.jpg',
   text: `Сначала — сирена. Потом — треск ботинок по линолеуму.  
 В дверь влетел отряд в броне с надписью "ВоенТехКонтроль".  
@@ -283,7 +284,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -299,7 +300,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -316,7 +317,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -332,7 +333,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
+      { text: 'Рестарт', next: 'restart_game' }
     ]
   },
 
@@ -350,7 +351,7 @@ scene_matrix_bug: {
 
 [НАЧАТЬ ЗАНОВО]`,
     choices: [
-      { text: 'Рестарт', next: 'intro' }
-    ]
+  { text: 'Рестарт', next: 'restart_game' }
+]
   }
 };
