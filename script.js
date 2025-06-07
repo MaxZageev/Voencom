@@ -97,7 +97,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const sceneDiv = document.createElement('div');
     sceneDiv.className = 'scene';
     sceneDiv.style.backgroundImage = `url('${scene.bg}')`;
-
+if (scene.glitch) {
+  sceneDiv.classList.add('scene--glitch');
+}
     const textDiv = document.createElement('div');
     textDiv.className = 'scene__text';
     sceneDiv.appendChild(textDiv);
