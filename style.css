@@ -79,7 +79,8 @@ body {
 #scene-container {
   position: relative;
   width: 100vw;
-  height: 100vh;
+  height: 100vh;   /* fallback */
+  height: 100dvh;  /* учитывает меню браузера на мобильных */
   background-size: cover;
   background-position: center;
   display: flex;
@@ -105,7 +106,7 @@ body {
   background: var(--text-bg-dark);
   padding: 1rem 1.5rem;
   border-radius: 12px 12px 0 0;
-  max-height: 40vh;
+  max-height: calc(100vh - 300px);
   overflow-y: auto;
   font-size: 1rem;
   line-height: 1.5;
@@ -115,6 +116,7 @@ body {
 .scene__choices {
   background: var(--bg-dark);
   padding: 1rem;
+  padding-bottom: 2rem;
   border-radius: 0 0 12px 12px;
   display: flex;
   flex-wrap: wrap;
@@ -136,7 +138,7 @@ body {
 @media (max-width: 768px) {
   .scene__text {
     font-size: 0.85rem;
-    max-height: 35vh;
+    max-height: calc(100vh - 280px);
     padding: 0.75rem 1rem;
   }
 
