@@ -334,3 +334,82 @@ body {
   height: auto;
   width: 300px; /* можно подогнать по размеру */
 }
+.logo {
+  position: relative;
+  display: inline-block;
+  margin-top: 100px;
+}
+
+.logo-image {
+  width: 300px;
+  max-width: 80vw;
+  height: auto;
+  display: block;
+  filter: none;
+}
+
+/* Глитч-копии */
+.logo-image.glitch-r,
+.logo-image.glitch-g,
+.logo-image.glitch-b {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Цветовые смещения */
+.logo-image.glitch-r {
+  filter: drop-shadow(-2px 0 red);
+  animation: glitch-r 2s infinite ease-in-out;
+}
+
+.logo-image.glitch-g {
+  filter: drop-shadow(2px 0 lime);
+  animation: glitch-g 3s infinite ease-in-out;
+}
+
+.logo-image.glitch-b {
+  filter: drop-shadow(0 -2px blue);
+  animation: glitch-b 1.5s infinite ease-in-out;
+}
+
+/* Основной глитч: тряска и случайные паузы */
+.logo--glitch .logo-image:not(.glitch-r):not(.glitch-g):not(.glitch-b) {
+  animation: logo-glitch-core 3s infinite steps(1, end);
+}
+
+/* Анимации */
+@keyframes glitch-r {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  10% { transform: translate(-2px, 0); opacity: 0.8; }
+  20% { transform: translate(2px, -1px); opacity: 0.4; }
+  30% { transform: translate(-1px, 2px); opacity: 0.6; }
+  40%, 90% { transform: translate(0, 0); opacity: 0.2; }
+}
+
+@keyframes glitch-g {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  15% { transform: translate(1px, 1px); opacity: 0.6; }
+  25% { transform: translate(-1px, -2px); opacity: 0.5; }
+  35% { transform: translate(2px, 1px); opacity: 0.7; }
+  45%, 95% { transform: translate(0, 0); opacity: 0.2; }
+}
+
+@keyframes glitch-b {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  20% { transform: translate(-1px, 2px); opacity: 0.7; }
+  30% { transform: translate(1px, -1px); opacity: 0.5; }
+  40% { transform: translate(2px, 2px); opacity: 0.6; }
+  50%, 90% { transform: translate(0, 0); opacity: 0.2; }
+}
+
+@keyframes logo-glitch-core {
+  0% { transform: none; }
+  5% { transform: translate(-1px, 1px) rotate(0.5deg); }
+  10% { transform: translate(1px, -1px) rotate(-0.5deg); }
+  15% { transform: translate(-2px, 2px) rotate(0.5deg); }
+  20%, 100% { transform: none; }
+}
