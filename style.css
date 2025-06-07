@@ -321,3 +321,16 @@ body {
     border-radius: 16px;
   }
 }
+
+.logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.logo-image {
+  max-width: 100%;
+  height: auto;
+  width: 300px; /* можно подогнать по размеру */
+}
