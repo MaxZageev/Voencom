@@ -1,14 +1,12 @@
 import { scenes } from './scenes.js';
 
-// script.js
-
 window.addEventListener('DOMContentLoaded', () => {
   const bgMusic = document.getElementById('bg-music');
   const clickSound = document.getElementById('click-sound');
   const startButton = document.querySelector('.start-button');
-  const sceneContainer = document.getElementById('scene-container');
   const endingsButton = document.querySelector('.endings-button');
   const startScreen = document.getElementById('start-screen');
+  const sceneContainer = document.getElementById('scene-container');
 
   function showPopup(htmlContent) {
     const modal = document.getElementById('popup-modal');
@@ -75,6 +73,42 @@ window.addEventListener('DOMContentLoaded', () => {
       renderScene('intro');
     }, 500);
   });
+
+  function renderScene(sceneKey) {
+    const scene = scenes[sceneKey];
+    if (!scene) return;
+
+    sceneContainer.innerHTML = '';
+
+    const sceneDiv = document.createElement('div');
+    sceneDiv.className = 'scene';
+    sceneDiv.style.backgroundImage = `url('${scene.bg}')`;
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'scene__text';
+    sceneDiv.appendChild(textDiv);
+
+    const choicesDiv = document.createElement('div');
+    choicesDiv.className = 'scene__choices';
+
+    scene.choices.forEach(choice => {
+      const button = document.createElement('button');
+      button.className = 'btn';
+      button.textContent = choice.text;
+      button.addEventListener('click', () => {
+        clickSound.currentTime = 0;
+        clickSound.play();
+        markEndingAsSeen(sceneKey);
+        renderScene(choice.next);
+      });
+      choicesDiv.appendChild(button);
+    });
+
+    sceneDiv.appendChild(choicesDiv);
+    sceneContainer.appendChild(sceneDiv);
+
+    typeText(textDiv, scene.text);
+  }
 });
 
 let typing = false;
@@ -102,4 +136,9 @@ function typeText(element, text, speed = 25, callback) {
       callback && callback();
     }
   }, speed);
-  element.onclick = ()
+  element.onclick = () => {
+    if (typing) {
+      skipTyping = true;
+    }
+  };
+}
